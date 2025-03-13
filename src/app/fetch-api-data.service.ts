@@ -80,7 +80,7 @@ export class FetchApiDataService {
 
   // Function to get user info
   public getUser(): any {
-    const user: any = JSON.parse(localStorage.getItem('user')|| "");
+    const user: any = JSON.parse(localStorage.getItem('user') || "{}");
     return {
       user
     }
