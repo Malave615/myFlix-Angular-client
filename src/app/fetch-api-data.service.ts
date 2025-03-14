@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://tracys-movie-api-083e9c37dd14.herokuapp.com/';
+//mongodb+srv://malavetracy:bnDohvkxDYZlq5tM@tracysdb.yixpnup.mongodb.net/test?retryWrites=true&w=majority&appName=TracysDB
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +31,7 @@ export class FetchApiDataService {
     );
   }
 
-  // Fucntion to get all movies
+  // Function to get all movies
   public getAllMovies(): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies', {headers: new HttpHeaders(
@@ -66,7 +67,7 @@ export class FetchApiDataService {
     );
   }
 
-  // Fucntion to get a genre by name
+  // Function to get a genre by name
   public getGenre(movieGenre: String): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.get(apiUrl + 'movies/genre/' + movieGenre, {headers: new HttpHeaders(
