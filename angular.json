@@ -24,6 +24,7 @@
             "polyfills": [
               "zone.js"
             ],
+            "baseHref": "/myFlix-Angular-client/",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
