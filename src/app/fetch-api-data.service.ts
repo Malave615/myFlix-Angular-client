@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 //Declaring the api url that will provide data for the client app
 const apiUrl = 'https://tracys-movie-api-083e9c37dd14.herokuapp.com/';
-//mongodb+srv://malavetracy:bnDohvkxDYZlq5tM@tracysdb.yixpnup.mongodb.net/test?retryWrites=true&w=majority&appName=TracysDB
+
 @Injectable({
   providedIn: 'root'
 })
