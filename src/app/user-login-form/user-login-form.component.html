@@ -34,16 +34,18 @@
              <div *ngIf="loading" class="loading-overlay">
                 <mat-spinner></mat-spinner>
             </div>
+
+            <mat-card-actions>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="loginForm.invalid  || loading"
+                    type="submit"
+                    >
+                        Login
+                    </button>
+            </mat-card-actions>
         </form>
     </mat-card-content>
-    <mat-card-actions>
-        <button
-            mat-raised-button
-            color="primary"
-            [disabled]="loginForm.invalid  || loading"
-            type="submit"
-            >
-                Login
-            </button>
-    </mat-card-actions>
+  
 </mat-card>
