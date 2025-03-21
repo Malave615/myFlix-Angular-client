@@ -24,7 +24,7 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
-  { path: '', redirectTo: 'welcome', pathMatch: 'prefix' },
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];
 
 
@@ -39,7 +39,6 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
