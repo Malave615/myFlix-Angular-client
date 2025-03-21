@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 })
 export class UserLoginFormComponent implements OnInit {
 
-  @Input() userData = { Username: '', Password: '' };
+  @Input() userData = { Username: '', Password: ''};
+  loading = false; // Loading state for the login button
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -23,26 +24,39 @@ export class UserLoginFormComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   // Function responsible for sending the form inputs to the backend
   userLogin(): void {
-    this.fetchApiData.userLogin(this.userData).subscribe((response) => {
-      // Logic for a successful user login goes here! (To be implemented)
-      console.log(response);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token); 
-      this.dialogRef.close(); // This will close the modal on success!
-      this.snackBar.open('User logged in successfully!', 'OK', {
-        duration: 2000
-      });
-      this.router.navigate(['movies']); // Redirect to movies page on success
-    }, (response) => {
-      console.log(response);
-      this.snackBar.open(response, 'OK', {
-        duration: 2000
-      });
+    this.loading = true; // Show loading spinner
+    this.fetchApiData.userLogin(this.userData).subscribe(
+      (response) => {
+        this.dialogRef.close(); // Close the modal on success
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', response.token);
+        this.snackBar.open('User logged in successfully!', 'OK', { duration: 2000 });
+        this.router.navigate(['movies']);
+        this.loading = false; 
+      }, 
+      (error) => {
+        this.loading = false;
+        if (error.status === 0) {
+          this.showErrorMessage('Network error: Please check your internet connection.');
+        } else if (error.status === 400) {
+          this.showErrorMessage('Invalid login credentials. Please try again.');
+        } else if (error.status === 404) {
+          this.showErrorMessage('User not found. Please check the entered details.');
+        } else {
+          this.showErrorMessage('An unexpected error occurred. Please try again later.');
+        }
+        console.error('Login error:', error);
+      }
+    );
+  }
+
+  private showErrorMessage(message: string): void {
+    this.snackBar.open(message, 'OK', {
+      duration: 3000
     });
   }
 }

@@ -7,8 +7,9 @@
       (click)="openUserRegistrationDialog()"
       style="margin-right: 10px;"
       color="primary"
+      [disabled]="loading"
     >
-      Sign Up
+      {{ loading ? 'Loading...' : 'Sign Up' }}
     </button>
   
     <!-- Login Button -->
@@ -17,7 +18,13 @@
       (click)="openUserLoginDialog()"
       style="margin-right: 10px;"
       color="primary"
+      [disabled]="loading"
     >
-      Login
+      {{ loading ? 'Loading...' : 'Login' }}
     </button>
+
+    <!-- Show loading spinner when loading is true -->
+     <div *ngIf="loading" class="loading-overlay">
+      <mat-spinner></mat-spinner>
+    </div>  
   </div>

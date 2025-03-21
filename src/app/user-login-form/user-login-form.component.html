@@ -3,7 +3,7 @@
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form>
+        <form #loginForm="ngForm" (ngSubmit)="userLogin()">
             <mat-form-field>
                 <input
                   matInput
@@ -12,8 +12,11 @@
                   name="username"
                   type="text"
                   required
+                  #username="ngModel"
                 />
+                <mat-error *ngIf="username.invalid && username.touched">Username is required.</mat-error>
             </mat-form-field>
+
             <mat-form-field>
                 <input
                   matInput
@@ -22,15 +25,23 @@
                   name="password"
                   type="password"
                   required
+                  #password="ngModel"
                 />
+                <mat-error *ngIf="password.invalid && password.touched">Password is required.</mat-error>
             </mat-form-field>
+
+            <!-- Loading spinner overlay -->
+             <div *ngIf="loading" class="loading-overlay">
+                <mat-spinner></mat-spinner>
+            </div>
         </form>
     </mat-card-content>
     <mat-card-actions>
         <button
             mat-raised-button
             color="primary"
-            (click)="userLogin()"
+            [disabled]="loginForm.invalid  || loading"
+            type="submit"
             >
                 Login
             </button>
