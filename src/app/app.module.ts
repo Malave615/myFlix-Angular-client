@@ -20,10 +20,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { FetchApiDataService } from './fetch-api-data.service';
+import { DescriptionDialogComponent } from './description-dialog/description-dialog.component';
+import { DirectorDialogComponent } from './director-dialog/director-dialog.component';
+import { GenreDialogComponent } from './genre-dialog/genre-dialog.component';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
+  { path: 'profile', component: ProfilePageComponent },
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
 ];
 
@@ -34,7 +40,11 @@ const appRoutes: Routes = [
     UserRegistrationFormComponent,
     UserLoginFormComponent,
     MovieCardComponent,
-    WelcomePageComponent
+    WelcomePageComponent,
+    ProfilePageComponent,
+    DescriptionDialogComponent,
+    DirectorDialogComponent,
+    GenreDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +62,7 @@ const appRoutes: Routes = [
     MatIconModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [FetchApiDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

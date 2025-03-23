@@ -20,8 +20,12 @@ export class WelcomePageComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  /**
+   * Opens the user registration dialog with a loading indicator.
+   * The dialog is opened after a delay to simulate loading.
+   */
   openUserRegistrationDialog(): void {
-    this.loading = true; // Set loading to true when opening the dialog
+    this.loading = true;
     setTimeout(() => {
       try {
         this.dialog.open(UserRegistrationFormComponent, {
@@ -32,9 +36,13 @@ export class WelcomePageComponent implements OnInit {
         this.loading = false;
         this.showErrorMessage('Failed to open registration dialog. Please try again later.');
       }
-    }, 1000); // Adjust the delay as needed
+    }, 1000);
   }
 
+  /*
+    * Opens the user login dialog with a loading indicator.
+    * The dialog is opened after a delay to simulate loading.
+    */
   openUserLoginDialog(): void {
     this.loading = true;
     setTimeout(() => { 
@@ -47,7 +55,7 @@ export class WelcomePageComponent implements OnInit {
         this.loading = false;
         this.showErrorMessage('Failed to open login dialog. Please try again later.');
       }
-    }, 1000); // Adjust the delay as needed
+    }, 1000);
   }
 
   private showErrorMessage(message: string): void {

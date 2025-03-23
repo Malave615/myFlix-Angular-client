@@ -1,0 +1,8 @@
+<div *ngIf="data?.Director">
+    <h2>{{ data.Director.Name || 'Director name not available' }}</h2>
+    <p><strong>Bio: </strong>{{ data.Director.Bio || 'Bio not available' }}</p>
+    <p><strong>Birth Date: </strong> {{ data.Director.Birth || 'Birth date not available' }}</p>
+</div>
+<div *ngIf="!data?.Director">
+    <p>Director information is unavailable.</p>
+</div>

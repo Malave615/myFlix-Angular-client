@@ -28,6 +28,10 @@ export class AppComponent {
     });
   }
 
+  /*
+   * Function that will open the dialog when the movie card button is clicked
+    * This dialog will display the movie card component
+    */
   openMoviesDialog(): void {
     this.dialog.open(MovieCardComponent, {
       width: '500px'

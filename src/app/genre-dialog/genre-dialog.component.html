@@ -1,0 +1,4 @@
+<div *ngIf="data?.Genre">
+    <h2>{{ data.Genre?.Name || 'Genre name not available' }}</h2>
+    <p><strong>Description: </strong>{{ data.Genre?.Description || 'No description available' }}</p>
+</div>

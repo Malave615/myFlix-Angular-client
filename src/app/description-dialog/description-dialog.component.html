@@ -1,0 +1,10 @@
+<div *ngIf="data?.movie">
+    <h2>{{ data.movie.Title || 'No title available' }}</h2>
+    <p><strong>Description: </strong>{{ data.movie.Description || 'No description available' }}</p>
+    <p><strong>Genre: </strong>{{ data.movie.Genre?.Name || 'No genre available' }}</p>
+    <p><strong>Director: </strong>{{ data.movie.Director?.Name || 'No director available' }}</p>
+    <p><strong>Director Bio: </strong> {{ data.movie.DirectorBio || 'No bio available' }}</p>
+    <p><strong>Actors: </strong>{{ data.movie.Actors?.join(', ') || 'No actors available' }}</p>    
+    <p><strong>Release Year: </strong>{{ data.movie.ReleaseYear || 'No release year available' }}</p>
+    <img *ngIf="data.movie.ImagePath" [src]="data.movie.ImagePath" alt="Movie Image" />
+</div>
