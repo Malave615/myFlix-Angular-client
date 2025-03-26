@@ -144,12 +144,12 @@ export class FetchApiDataService {
    * @param movieTitle - the title of the movie to add to the user's favorites
    * @returns an Observable of the HTTP response from the API
    */
-  public addFavoriteMovie(username: String, movieTitle: String): Observable<any> {
+  public addFavoriteMovie(username: String, movieId: String): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {
       return throwError('User is not authenticated. Please log in first.');
     }
-    return this.http.post(apiUrl + 'users/' + username + '/' + movieTitle, {}, {headers: new HttpHeaders(
+    return this.http.post(apiUrl + 'users/' + username + '/movies/' + movieId, {}, {headers: new HttpHeaders(
       {
         Authorization: 'Bearer ' + token,
       })}).pipe(
