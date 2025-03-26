@@ -11,7 +11,7 @@ import { DirectorDialogComponent } from '../director-dialog/director-dialog.comp
   templateUrl: './movie-card.component.html',
   styleUrls: ['./movie-card.component.scss']
 })
-export class MovieCardComponent implements OnInit{
+export class MovieCardComponent implements OnInit {
   movies: any[] = [];
   loading: boolean = false;
   retryAttempt: boolean = false;
@@ -20,7 +20,7 @@ export class MovieCardComponent implements OnInit{
     private fetchApiData: FetchApiDataService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getMovies();
@@ -38,8 +38,8 @@ export class MovieCardComponent implements OnInit{
       (resp: any) => {
         this.movies = resp;
         console.log(this.movies);
-        this.loading = false; 
-      }, 
+        this.loading = false;
+      },
       (error) => {
         this.loading = false;
         this.handleError(error);
@@ -47,14 +47,20 @@ export class MovieCardComponent implements OnInit{
     );
   }
 
-  /* 
+  /*
    * Opens a dialog to display the description of a movie.
    * @param name - The name of the movie to display.
    */
   openDescriptionDialog(movie: any): void {
-    if (movie && movie.Title && movie.Description && movie.Genre && movie.Director) {
+    if (
+      movie &&
+      movie.Title &&
+      movie.Description &&
+      movie.Genre &&
+      movie.Director
+    ) {
       this.dialog.open(DescriptionDialogComponent, {
-        data: { 
+        data: {
           movie: {
             Title: movie.Title,
             Description: movie.Description,
@@ -63,7 +69,7 @@ export class MovieCardComponent implements OnInit{
             Director: movie.Director.Name,
             DirectorBio: movie.Director.Bio,
             DirectorBirth: movie.Director.Birth,
-            Actors: movie.Actors,          
+            Actors: movie.Actors,
             ReleaseYear: movie.ReleaseYear,
             Image: movie.ImagePath
           }
@@ -71,11 +77,13 @@ export class MovieCardComponent implements OnInit{
       });
     } else {
       console.error('Movie data is incomplete or missing properties:', movie);
-      this.snackBar.open('Movie data is incomplete. Please try again.', 'OK', {duration: 3000});
+      this.snackBar.open('Movie data is incomplete. Please try again.', 'OK', {
+        duration: 3000
+      });
     }
   }
 
-  /* 
+  /*
    * Opens a dialog to display the genre of a movie.
    * @param name - The name of the movie to display.
    */
@@ -95,7 +103,7 @@ export class MovieCardComponent implements OnInit{
         data: genreData
       });
 
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe((result) => {
         console.log('The dialog was closed');
       });
     } else {
@@ -103,7 +111,7 @@ export class MovieCardComponent implements OnInit{
     }
   }
 
-  /* 
+  /*
    * Opens a dialog to display the director of a movie.
    * @param name - The name of the movie to display.
    */
@@ -115,7 +123,7 @@ export class MovieCardComponent implements OnInit{
         Director: {
           Name: director.Name,
           Bio: director.Bio,
-          Birth: director.Birth,
+          Birth: director.Birth
         }
       };
 
@@ -124,7 +132,7 @@ export class MovieCardComponent implements OnInit{
         data: directorData
       });
 
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe((result) => {
         console.log('The dialog was closed');
       });
     } else {
@@ -138,31 +146,50 @@ export class MovieCardComponent implements OnInit{
    * */
   addToFavorites(movie: any): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user && user.username) {
-      this.fetchApiData.addFavoriteMovie(user.username, movie._id).subscribe((response) => {
-        console.log(response);
-        this.snackBar.open(`${movie.Title} has been added to your favorites!`, 'OK', {duration: 3000});
+    if (user && user.Username) {
+      this.fetchApiData.addFavoriteMovie(user.Username, movie._id).subscribe(
+        (response) => {
+          console.log(response);
+          this.snackBar.open(
+            `${movie.Title} has been added to your favorites!`,
+            'OK',
+            { duration: 3000 }
+          );
 
-        user.favoriteMovies.push(movie._id);
-        localStorage.setItem('user', JSON.stringify(user));
-      }, (error) => {
-        console.error('Error adding movie to favorites:', error);
-        this.snackBar.open('Failed to add to favorites. Please try again.', 'OK', {duration: 3000});
-        });
-      } else {
-        this.snackBar.open('Please log in to add movies to your favorites.', 'OK', {duration: 3000});
+          user.FavMovies.push(movie._id);
+          localStorage.setItem('user', JSON.stringify(user));
+        },
+        (error) => {
+          console.error('Error adding movie to favorites:', error);
+          this.snackBar.open(
+            'Failed to add to favorites. Please try again.',
+            'OK',
+            { duration: 3000 }
+          );
+        }
+      );
+    } else {
+      this.snackBar.open(
+        'Please log in to add movies to your favorites.',
+        'OK',
+        { duration: 3000 }
+      );
     }
   }
 
-  /* 
+  /*
    * Handles errors that occur during the API call.
    * Displays appropriate error messages based on the status code.
    */
   private handleError(error: any): void {
-    if (error.status ===0) {
-      this.showErrorMessage('Network error: Please check your internet connection and try again.');
+    if (error.status === 0) {
+      this.showErrorMessage(
+        'Network error: Please check your internet connection and try again.'
+      );
     } else if (error.status === 400) {
-      this.showErrorMessage('Invalid input. Please check the data you provided.');
+      this.showErrorMessage(
+        'Invalid input. Please check the data you provided.'
+      );
     } else if (error.status === 404) {
       this.showErrorMessage('Movies not found. Please try again later.');
     } else if (error.status === 500) {
@@ -170,9 +197,13 @@ export class MovieCardComponent implements OnInit{
     } else if (error.status === 401) {
       this.showErrorMessage('Unauthorized access. Please log in to continue.');
     } else if (error.status === 403) {
-      this.showErrorMessage('Forbidden access. You do not have permission to view this resource.');
+      this.showErrorMessage(
+        'Forbidden access. You do not have permission to view this resource.'
+      );
     } else {
-      this.showErrorMessage('An unexpected error occurred. Please try again later.');
+      this.showErrorMessage(
+        'An unexpected error occurred. Please try again later.'
+      );
     }
 
     console.error('Error fetching movies:', error);
