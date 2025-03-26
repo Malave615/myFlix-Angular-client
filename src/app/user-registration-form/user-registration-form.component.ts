@@ -13,6 +13,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class UserRegistrationFormComponent implements OnInit {
 
+  /**
+   * This is the function that will run when the component is initialized
+   * @param fetchApiData
+   * @param dialogRef
+   * This is the data model for the user registration form
+   * Shows a loading spinner if the form is being submitted
+   */
   @Input() userData = { 
     Name: '',
     Username: '',
@@ -20,9 +27,9 @@ export class UserRegistrationFormComponent implements OnInit {
     Email: '',
     Birthday: '',
     FavoriteMovies: []
-  }; // This is the data model for the user registration form
+  }; 
 
-  loading = false; // This will be used to show a loading spinner if needed
+  loading = false;
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -32,7 +39,11 @@ export class UserRegistrationFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // Function sending the form inputs to the backend
+  /**
+   * Function sending the form inputs to the backend
+   * When the form is submitted, the loading spinner will be shown
+   * If the form is successfully submitted, the dialog will be closed
+   */
   registerUser(): void {
     this.loading = true; // Set loading to true to show a spinner if needed
     this.fetchApiData.userRegistration(this.userData).subscribe((response) => {
@@ -42,7 +53,7 @@ export class UserRegistrationFormComponent implements OnInit {
       this.snackBar.open('User registered successfully!', 'OK', {
         duration: 2000
       });
-      this.loading = false; // Stop loading after success
+      this.loading = false;
     }, (error) => {
       console.error(error);
       let errorMessage = 'An error occurred. Please try again later.';
@@ -52,7 +63,7 @@ export class UserRegistrationFormComponent implements OnInit {
       this.snackBar.open(errorMessage, 'OK', {
         duration: 2000
       });
-      this.loading = false; // Stop loading on error
+      this.loading = false;
     });
   }
 }

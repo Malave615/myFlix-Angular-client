@@ -14,14 +14,20 @@ export class AppComponent {
 
   constructor(public dialog: MatDialog) {}
 
-  // Function that will open the dialog when the signup button is clicked
+  /**
+   * Function that will open the dialog when the signup button is clicked
+   * This dialog will display the user registration form component
+   */
   openUserRegistrationDialog(): void {
     this.dialog.open(UserRegistrationFormComponent, {
       width: '280px'
     });
   }
 
-  // Function that will open the dialog when the login button is clicked
+  /**
+   * Function that will open the dialog when the login button is clicked
+   * This dialog will display the user login form component
+   */
   openUserLoginDialog(): void {
     this.dialog.open(UserLoginFormComponent, {
       width: '280px'

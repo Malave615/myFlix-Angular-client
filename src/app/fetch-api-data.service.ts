@@ -5,7 +5,9 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-//Declaring the api url that will provide data for the client app
+/** Declaring the api url that will provide data for the client app
+ * This is the default path of the API
+ */
 const apiUrl = 'https://tracys-movie-api-083e9c37dd14.herokuapp.com/';
 
 @Injectable({
