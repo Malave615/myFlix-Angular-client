@@ -1,10 +1,10 @@
-# MyFlixAngularClient
+# MyFlix-Angular-Client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16. Angular was used to create a single-page, responsive movie app with routing and several interface views. The client-side developed in this Achievement will support the existing server-side architecture, REST API and database, by facilitating user requests and rendering the response from the server-side via a number of different interface views. The app will be accompanied by relevant documentation and handoff deliverables, including a kanban board containing user stories and story points.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files. To access the remote application hosted on ghpages, navigate to https://Malave615.github.io/myFlix-Angular-client/
 
 ## Code scaffolding
 
