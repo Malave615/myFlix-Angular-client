@@ -16,9 +16,9 @@
   <div class="favorite-movies">
     <h2>Your Favorite Movies</h2>
     <ul>
-      <li *ngFor="let movie of favoriteMovies">
+      <li *ngFor="let movie of FavMovies">
         {{ movie.title }} ({{ movie.releaseYear }})
-        <button (click)="removeFromFavorite(movie)">Remove</button>
+        <button (click)="removeFromFav(movie)">Remove</button>
       </li>
     </ul>
   </div>
@@ -30,9 +30,9 @@
       <div>
         {{ movie.title }} {{ movie.releaseYear }}
         <mat-icon 
-          [color]="isFavorite(movie) ? 'accent' : 'primary'"
-          (click)="isFavorite(movie) ? removeFromFavorite(movie) : addToFavorite(movie)">
-          {{ isFavorite(movie) ? 'favorite' : 'favorite_border' }}
+          [color]="isFav(movie) ? 'accent' : 'primary'"
+          (click)="isFav(movie) ? removeFromFav(movie) : addToFav(movie)">
+          {{ isFav(movie) ? 'favorite' : 'favorite_border' }}
         </mat-icon>
       </div>
     </div>

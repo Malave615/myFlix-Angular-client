@@ -26,7 +26,7 @@ export class UserRegistrationFormComponent implements OnInit {
     Password: '', 
     Email: '',
     Birthday: '',
-    FavoriteMovies: []
+    FavMovies: []
   }; 
 
   loading = false;

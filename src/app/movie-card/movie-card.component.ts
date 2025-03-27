@@ -144,10 +144,10 @@ export class MovieCardComponent implements OnInit {
    * Add a movie to the user's favorites list.
    * @param id - The ID of the movie to add to favorites.
    * */
-  addToFavorites(movie: any): void {
+  addToFav(movie: any): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (user && user.Username) {
-      this.fetchApiData.addFavoriteMovie(user.Username, movie._id).subscribe(
+      this.fetchApiData.addFavMovie(user.Username, movie._id).subscribe(
         (response) => {
           console.log(response);
           this.snackBar.open(

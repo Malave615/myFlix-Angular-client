@@ -3,6 +3,7 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile-page',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProfilePageComponent implements OnInit {
   userData: any = {};
-  favoriteMovies: any[] = [];
+  FavMovies: any[] = [];
   allMovies: any[] = [];
 
   constructor(
@@ -42,8 +43,15 @@ export class ProfilePageComponent implements OnInit {
 
       localStorage.setItem('user', JSON.stringify(this.userData));
       console.log(this.userData);
-      this.getFavoriteMovies();
+      this.getFavMovies();
     });
+  }
+
+  /**
+   * Reusable method for API calls
+   */
+  getMovies(): Observable<any[]> {
+    return this.fetchApiData.getAllMovies();
   }
 
   /** Function to get all movies
@@ -51,7 +59,7 @@ export class ProfilePageComponent implements OnInit {
    * @returns {Array}
    */
   getAllMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((res: any) => {
+    this.getMovies().subscribe((res: any) => {
       this.allMovies = res;
       console.log(this.allMovies);
     }, (error) => {
@@ -66,12 +74,10 @@ export class ProfilePageComponent implements OnInit {
     * Filters the movies based on the user's favorite movie IDs
     * Updates the favoriteMovies array with the filtered movies
     */
-   getFavoriteMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((res: any) => {
-      this.favoriteMovies = res.filter((movie: any) => {
-        return this.userData.favoriteMovies.includes(movie._id);
-      });
-      console.log(this.favoriteMovies);
+   getFavMovies(): void {
+    this.getMovies().subscribe((res: any) => {
+      this.FavMovies = res.filter((movie: any) => this.userData.FavMovies.includes(movie._id));
+      console.log(this.FavMovies);
     }, (error) => {
       this.snackBar.open('Failed to fetch favorite movies. Please try again later.', 'OK', {
         duration: 3000
@@ -84,8 +90,8 @@ export class ProfilePageComponent implements OnInit {
    * @param movieId
    * @returns {boolean}
    */
-  isFavorite(movie: any): boolean {
-    return this.userData.favortieMovies.includes(movie._id);
+  isFav(movie: any): boolean {
+    return this.userData.FavMovies.includes(movie._id);
   }
 
   /**
@@ -96,11 +102,12 @@ export class ProfilePageComponent implements OnInit {
    * @param movie 
    * @returns
    */
-    addToFavorite(movie: any): void {
-      this.fetchApiData.addFavoriteMovie(this.userData.id, movie._id).subscribe((res: any) => {
-        this.userData.favoriteMovies = res.favoriteMovies;
+    addToFav(movie: any): void {
+      this.fetchApiData.addFavMovie(this.userData.id, movie._id).subscribe((res: any) => {
+        console.log('Updated FavMovies:', res.FavMovies);
+        this.userData.FavMovies = res.FavMovies;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        this.getFavoriteMovies();
+        this.getFavMovies();
         this.snackBar.open(`${movie.title} added to favorites!`, 'OK', {
           duration: 3000
         });
@@ -117,11 +124,11 @@ export class ProfilePageComponent implements OnInit {
     * Updates the userData and favoriteMovies arrays accordingly
     * Displays a success message using MatSnackBar
     */
-  removeFromFavorite(movie: any): void {
-    this.fetchApiData.deleteFavoriteMovie(this.userData.id, movie._id).subscribe((res: any) => {
-      this.userData.favoriteMovies = res.favoriteMovies;
+  removeFromFav(movie: any): void {
+    this.fetchApiData.deleteFavMovie(this.userData.id, movie._id).subscribe((res: any) => {
+      this.userData.FavMovies = res.FavMovies;
       localStorage.setItem('user', JSON.stringify(this.userData));
-      this.getFavoriteMovies();
+      this.getFavMovies();
       this.snackBar.open(`${movie.title} removed from favorites!`, 'OK', {
         duration: 3000
       });
@@ -152,7 +159,7 @@ export class ProfilePageComponent implements OnInit {
       };
 
       localStorage.setItem('user', JSON.stringify(this.userData));
-      this.getFavoriteMovies();
+      this.getFavMovies();
       
       this.snackBar.open('Profile updated successfully!', 'OK', {
         duration: 3000
@@ -175,6 +182,6 @@ export class ProfilePageComponent implements OnInit {
       duration: 3000
     });
     this.userData = {};
-    this.favoriteMovies = [];
+    this.FavMovies = [];
   }
 }
