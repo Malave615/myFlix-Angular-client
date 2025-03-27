@@ -17,11 +17,29 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Project Overview
 
-This is the front-end application for a movie database movie_api I previously built. It allows users to browse a collection of movies, view detailed information about each movie, director, genre, and starring actors. Users can create and manage an account including adding a list of their favorite movies.
+This is the front-end application, built using Angular, for a movie API I previously built. It allows users to browse a collection of movies, view detailed information about each movie, director, genre, and starring actors. Users can create and manage an account including adding a list of their favorite movies.
 
 ## Features
 
+Feature 1: Display a welcome view where users can either login or register a new account
+
+Feature 2: Authenticated users will be able to view all movies in the database
+
+Feature 3: Upon clicking on a particular movie, users will be taken to a single movie view, where the following additional features and movie details will be displayed:  
+○ A button that when clicked takes a user to the description view, containing a description, the director, the genre, and the actors of that particular movie.
+○ A button that when clicked takes a user to the director view, where details about the director of that particular movie will be displayed. 
+○ A button that when clicked takes a user to the genre view, where details about that particular genre of the movie will be displayed. 
+○ A button that when clicked adds that particular movie to the user's list of favorites.
+
 ## Project Dependencies
+
+_ Angular
+_ Angular-Material
+_ Angular - Router
+_ Angular/cli
+_ jasmine
+_ typedoc
+\_ Angular-cli-ghpages
 
 ## Setup and Installation
 
