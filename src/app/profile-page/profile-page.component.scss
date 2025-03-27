@@ -1,0 +1,64 @@
+.all-movies {
+    margin-top: 20px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 15px;
+    padding: 20px 0;
+}
+
+.movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: white;
+}
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.movie-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.movie-details {
+    text-align: center;
+}
+
+.movie-details h3 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.movie-details p {
+    font-size: 1.2em;
+    color: #777;
+}
+
+mat-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 32px;
+}
+
+.fav-movies {
+    margin-top: 20px;
+}
+
+
+

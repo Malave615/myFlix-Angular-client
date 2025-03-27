@@ -200,7 +200,7 @@ export class FetchApiDataService {
     */
   public deleteFavMovie(username: String, movieTitle: String): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.delete(apiUrl + 'users/' + username + '/' + movieTitle, {headers: new HttpHeaders(
+    return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieTitle, {headers: new HttpHeaders(
       {
         Authorization: 'Bearer ' + token,
       })}).pipe(

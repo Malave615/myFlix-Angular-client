@@ -1,5 +1,6 @@
 <div class="profile-page">
-  <h1>Welcome, {{ userData.username }}</h1>
+  <button (click)="goToMoviesPage()">Back to Movies</button>
+  <h1>Welcome, {{ userData.Username }}</h1>
 
   <!-- Profile Update Form -->
   <form (ngSubmit)="updateUserData()">
@@ -13,30 +14,50 @@
   </form>
 
   <!-- Favorite Movies List -->
-  <div class="favorite-movies">
+  <div class="fav-movies">
     <h2>Your Favorite Movies</h2>
-    <ul>
-      <li *ngFor="let movie of FavMovies">
-        {{ movie.title }} ({{ movie.releaseYear }})
-        <button (click)="removeFromFav(movie)">Remove</button>
-      </li>
-    </ul>
+    <div class="movie-grid">
+      <ul>
+        <li *ngFor="let movie of FavMovies" class="movie-card">
+          <div class="movie-info">
+            <img [src]="movie.ImagePath" alt="{{ movie.title }}" class="movie-image" />
+            <div class="movie-details">
+              <h3>{{ movie.title }}</h3>
+              <p>{{ movie.releaseYear }}</p>
+            </div>
+          </div>
+          <button (click)="removeFromFav(movie)">Remove</button>
+        </li>
+      </ul>
+
+    </div>
+    
   </div>
 
   <!-- Add New Movies to Favorites -->
    <div class="all-movies">
     <h2>All Movies</h2>
-    <div *ngFor="let movie of allMovies">
-      <div>
-        {{ movie.title }} {{ movie.releaseYear }}
+    <div class="movie-grid">
+      <div *ngFor="let movie of allMovies" class="movie-card">
+        <div class="movie-info">
+          <img [src]="movie.ImagePath" alt="{{ movie.title }}" class="movie-image" />
+  
+          <div class="movie-details">
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.releaseYear }}</p>
+          </div>
+        </div>
+  
+        <!-- Heart Icon indicating if movie is in favorites -->
         <mat-icon 
           [color]="isFav(movie) ? 'accent' : 'primary'"
           (click)="isFav(movie) ? removeFromFav(movie) : addToFav(movie)">
-          {{ isFav(movie) ? 'favorite' : 'favorite_border' }}
+          {{ isFav(movie) ? 'fav' : 'fav_border' }}
         </mat-icon>
       </div>
+     </div>
     </div>
-   </div>
+    
 
   <!-- Logout Button -->
    <button (click)="logout()">Logout</button>

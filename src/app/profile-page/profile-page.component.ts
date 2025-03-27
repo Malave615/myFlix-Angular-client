@@ -41,8 +41,8 @@ export class ProfilePageComponent implements OnInit {
         token: undefined
       };
 
-      localStorage.setItem('user', JSON.stringify(this.userData));
       console.log(this.userData);
+      localStorage.setItem('user', JSON.stringify(this.userData));
       this.getFavMovies();
     });
   }
@@ -77,7 +77,7 @@ export class ProfilePageComponent implements OnInit {
    getFavMovies(): void {
     this.getMovies().subscribe((res: any) => {
       this.FavMovies = res.filter((movie: any) => this.userData.FavMovies.includes(movie._id));
-      console.log(this.FavMovies);
+      console.log('Updated FavMovies:', this.FavMovies);
     }, (error) => {
       this.snackBar.open('Failed to fetch favorite movies. Please try again later.', 'OK', {
         duration: 3000
@@ -125,7 +125,21 @@ export class ProfilePageComponent implements OnInit {
     * Displays a success message using MatSnackBar
     */
   removeFromFav(movie: any): void {
-    this.fetchApiData.deleteFavMovie(this.userData.id, movie._id).subscribe((res: any) => {
+    const Username = this.userData.Username;
+    const movieId = movie._id;
+
+    if (!Username) {
+      console.error('Username is undefined! User not logged in.')
+      this.snackBar.open('User not logged in. Please log in.', 'OK', {
+        duration: 3000
+      });
+      return;
+    }
+
+    console.log(`Removing movie with ID: ${movieId} for user: ${Username}`);
+    
+
+    this.fetchApiData.deleteFavMovie(Username, movieId).subscribe((res: any) => {
       this.userData.FavMovies = res.FavMovies;
       localStorage.setItem('user', JSON.stringify(this.userData));
       this.getFavMovies();
@@ -133,6 +147,7 @@ export class ProfilePageComponent implements OnInit {
         duration: 3000
       });
     }, (error) => {
+      console.error('Error removing from favorites:', error);
       this.snackBar.open('Failed to remove movie from favorites. Please try again later.', 'OK', {
         duration: 3000
       });
@@ -169,6 +184,13 @@ export class ProfilePageComponent implements OnInit {
         duration: 3000
       });
     })
+  }
+
+  /**
+   * Function to navigate back to Movies page
+   */
+  goToMoviesPage(): void {
+    this.router.navigate(['/movies']);
   }
 
   /**
