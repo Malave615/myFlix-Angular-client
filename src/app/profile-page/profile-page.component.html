@@ -1,20 +1,16 @@
 <div class="profile-page">
-  <button (click)="goToMoviesPage()">Back to Movies</button>
-  <h1>Welcome, {{ userData.Username }}</h1>
 
-  <!-- Profile Update Form -->
-  <form (ngSubmit)="updateUserData()">
-    <label for="username">Username:</label>
-    <input id="username" [(ngModel)]="userData.username" name="username" required />
+  <!-- Back to Movies Button -->
+  <button mat-raised-button="primary" (click)="goToMoviesPage()">Back to Movies</button>
 
-    <label for="email">Email:</label>
-    <input id="email" [(ngModel)]="userData.email" name="email" type="email" required />
+  <!-- Welcome Header -->
+  <h1>Welcome, {{ userData?.Username || 'Loading...' }}</h1>
 
-    <button type="submit">Update Profile</button>
-  </form>
+  <!-- Button to open the Edit Profile Dialog -->
+  <button mat-raised-button color="accent" (click)="openEditProfileDialog()">Edit Profile</button>
 
   <!-- Favorite Movies List -->
-  <div class="fav-movies">
+  <div *ngIf="userData && userData.FavMovies" class="fav-movies">
     <h2>Your Favorite Movies</h2>
     <div class="movie-grid">
       <ul>
@@ -29,13 +25,11 @@
           <button (click)="removeFromFav(movie)">Remove</button>
         </li>
       </ul>
-
     </div>
-    
   </div>
 
-  <!-- Add New Movies to Favorites -->
-   <div class="all-movies">
+  <!-- All Movies List -->
+  <div class="all-movies">
     <h2>All Movies</h2>
     <div class="movie-grid">
       <div *ngFor="let movie of allMovies" class="movie-card">
@@ -55,10 +49,11 @@
           {{ isFav(movie) ? 'fav' : 'fav_border' }}
         </mat-icon>
       </div>
-     </div>
     </div>
+  </div>
     
-
   <!-- Logout Button -->
-   <button (click)="logout()">Logout</button>
+  <div>
+    <button (click)="logout()">Logout</button>
+  </div>
 </div>

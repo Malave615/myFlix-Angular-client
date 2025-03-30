@@ -1,0 +1,30 @@
+<!-- Profiile Edit Form -->
+ <div class="edit-profile-form">
+     <h1 mat-dialog-title>Edit Profile</h1>
+       <div mat-dialog-content>
+
+         <form (ngSubmit)="onSave()" #profileForm="ngForm">
+           <mat-form-field appearance="fill">
+             <mat-label>Username</mat-label>
+             <input matInput placeholder="Username" [(ngModel)]="userData.Username" name="username" required />
+           </mat-form-field>
+         
+           <mat-form-field appearance="fill">
+             <mat-label>Email</mat-label>
+             <input matInput placeholder="Email" [(ngModel)]="userData.Email" name="email" required />
+           </mat-form-field>
+
+           <mat-form-field appearance="fill">
+             <mat-label>Birthday</mat-label>
+             <input matInput placeholder="Birthday" [(ngModel)]="userData.Birthday" name="birthday" type="date" />
+           </mat-form-field>
+
+           <button mat-raised-button color="primary" type="submit">Save</button>
+         </form>
+         
+       </div>
+       <div mat-dialog-actions>
+         <button mat-button (click)="onCancel()">Cancel</button>
+         <button mat-button [mat-dialog-close]="data" (click)="onSave()">Save</button>
+       </div>
+ </div>

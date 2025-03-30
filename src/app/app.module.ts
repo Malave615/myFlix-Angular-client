@@ -25,6 +25,7 @@ import { FetchApiDataService } from './fetch-api-data.service';
 import { DescriptionDialogComponent } from './description-dialog/description-dialog.component';
 import { DirectorDialogComponent } from './director-dialog/director-dialog.component';
 import { GenreDialogComponent } from './genre-dialog/genre-dialog.component';
+import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.component';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -44,7 +45,8 @@ const appRoutes: Routes = [
     ProfilePageComponent,
     DescriptionDialogComponent,
     DirectorDialogComponent,
-    GenreDialogComponent
+    GenreDialogComponent,
+    EditProfileFormComponent
   ],
   imports: [
     BrowserModule,

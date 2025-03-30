@@ -21,11 +21,11 @@ export class FetchApiDataService {
    */
   constructor(private http: HttpClient, private router: Router) { }
 
- /*
-  * API call for user registration
-  * @param userDetails - an object containing the user's registration details
-  * @returns an Observable of the HTTP response from the API
-  */
+  /*
+   * API call for user registration
+   * @param userDetails - an object containing the user's registration details
+   * @returns an Observable of the HTTP response from the API
+   */
   public userRegistration(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http.post(apiUrl + 'users/', userDetails).pipe(
@@ -34,10 +34,10 @@ export class FetchApiDataService {
   }
 
   /*
-    * API call for user login
-    * @param userDetails - an object containing the user's login details
-    * @returns an Observable of the HTTP response from the API
-    */
+   * API call for user login
+   * @param userDetails - an object containing the user's login details
+   * @returns an Observable of the HTTP response from the API
+   */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
     return this.http.post(apiUrl + 'login/', userDetails).pipe(
@@ -159,15 +159,15 @@ export class FetchApiDataService {
   }
 
   /* 
-    * API call to edit user details
-    * @param username - the username of the user to edit
-    * @param userDetails - an object containing the user's updated details
-    * @returns an Observable of the HTTP response from the API
-    */
-  public editUser(userDetails: any): Observable<any> {
+   * API call to edit user details
+   * @param username - the username of the user to edit
+   * @param userDetails - an object containing the user's updated details
+   * @returns an Observable of the HTTP response from the API
+   */
+  public updateUser(Username: string, updatedUserDetails: any): Observable<any> {
     const token = localStorage.getItem('token');
-    const username = localStorage.getItem('user');
-    return this.http.put(apiUrl + 'users/' + username, userDetails, {headers: new HttpHeaders(
+
+    return this.http.put<any>(apiUrl + 'users/' + Username, updatedUserDetails, {headers: new HttpHeaders(
       {
         Authorization: 'Bearer ' + token,
       })}).pipe(
@@ -177,10 +177,10 @@ export class FetchApiDataService {
   }
 
   /*
-    * API call to delete a user by username
-    * @param username - the username of the user to delete
-    * @returns an Observable of the HTTP response from the API
-    */
+   * API call to delete a user by username
+   * @param username - the username of the user to delete
+   * @returns an Observable of the HTTP response from the API
+   */
   public deleteUser(username: String): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.delete(apiUrl + 'users/' + username ,  {headers: new HttpHeaders(
@@ -193,11 +193,11 @@ export class FetchApiDataService {
   }
   
   /*
-    * API call to delete a movie from a user's favorite movies
-    * @param username - the username of the user to remove the movie from
-    * @param movieTitle - the title of the movie to remove from the user's favorites
-    * @returns an Observable of the HTTP response from the API
-    */
+   * API call to delete a movie from a user's favorite movies
+   * @param username - the username of the user to remove the movie from
+   * @param movieTitle - the title of the movie to remove from the user's favorites
+   * @returns an Observable of the HTTP response from the API
+   */
   public deleteFavMovie(username: String, movieTitle: String): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieTitle, {headers: new HttpHeaders(
@@ -209,11 +209,11 @@ export class FetchApiDataService {
     );
   }
 
-/* 
-  * Handle errors from HTTP requests
-  * @param error - the error response from the HTTP request
-  * @returns an Observable that throws an error message
-  */
+  /* 
+   * Handle errors from HTTP requests
+   * @param error - the error response from the HTTP request
+   * @returns an Observable that throws an error message
+   */
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 401) {
       this.router.navigate(['login']);

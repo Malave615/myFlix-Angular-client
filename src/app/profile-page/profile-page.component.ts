@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { EditProfileFormComponent } from '../edit-profile-form/edit-profile-form.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,6 +15,7 @@ export class ProfilePageComponent implements OnInit {
   userData: any = {};
   FavMovies: any[] = [];
   allMovies: any[] = [];
+  isEditingProfile: boolean = false;
 
   constructor(
     private fetchApiData: FetchApiDataService,
@@ -23,25 +25,35 @@ export class ProfilePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUserData();
-    this.getAllMovies();
-   }
+    const user = localStorage.getItem('user');
 
-   /**
-    * Function to get user data
-    * Fetches user data from the API, ensures the user id is set correctly and stores it in local storage
-    * Calls getFavoriteMovies to fetch the user's favorite movies
-    */
+    if (user) {
+      this.getUserData();
+      this.getAllMovies();
+    } else {
+      this.snackBar.open('Please log in to view your profile.', 'OK', {
+        duration: 3000
+      });
+      this.router.navigate(['welcome']);
+    }
+  }
+
+  /**
+   * Function to get user data
+   * Fetches user data from the API, ensures the user id is set correctly and stores it in local storage
+   * Calls getFavoriteMovies to fetch the user's favorite movies
+   */
   getUserData(): void {
     this.fetchApiData.getUser().subscribe((resp: any) => {
+      console.log('User Data:', resp);
       this.userData = {
         ...resp,
         id: resp._id,
         password: undefined,
-        token: undefined
+        token: undefined,
+        FavMovies: resp.FavMovies || []
       };
 
-      console.log(this.userData);
       localStorage.setItem('user', JSON.stringify(this.userData));
       this.getFavMovies();
     });
@@ -53,7 +65,7 @@ export class ProfilePageComponent implements OnInit {
   getMovies(): Observable<any[]> {
     return this.fetchApiData.getAllMovies();
   }
-
+  
   /** Function to get all movies
    * Fetches all movies from the API
    * @returns {Array}
@@ -68,13 +80,13 @@ export class ProfilePageComponent implements OnInit {
       });
     });
   }
-
-   /**
-    * Function to fetch user's favorite movies
-    * Filters the movies based on the user's favorite movie IDs
-    * Updates the favoriteMovies array with the filtered movies
-    */
-   getFavMovies(): void {
+  
+  /**
+   * Function to fetch user's favorite movies
+   * Filters the movies based on the user's favorite movie IDs
+   * Updates the favoriteMovies array with the filtered movies
+   */
+  getFavMovies(): void {
     this.getMovies().subscribe((res: any) => {
       this.FavMovies = res.filter((movie: any) => this.userData.FavMovies.includes(movie._id));
       console.log('Updated FavMovies:', this.FavMovies);
@@ -82,6 +94,24 @@ export class ProfilePageComponent implements OnInit {
       this.snackBar.open('Failed to fetch favorite movies. Please try again later.', 'OK', {
         duration: 3000
       });
+    });
+  }
+
+  /** 
+   * Function to open the edit profile dialog
+   * Opens a dialog to edit user profile
+   * Passes the user data to the dialog
+   * On dialog close, updates the user data
+   */
+  openEditProfileDialog(): void {
+    const dialogRef = this.dialog.open(EditProfileFormComponent, {
+      width: '500px',
+      data: this.userData
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getUserData();
+      }
     });
   }
 
@@ -102,28 +132,29 @@ export class ProfilePageComponent implements OnInit {
    * @param movie 
    * @returns
    */
-    addToFav(movie: any): void {
-      this.fetchApiData.addFavMovie(this.userData.id, movie._id).subscribe((res: any) => {
-        console.log('Updated FavMovies:', res.FavMovies);
-        this.userData.FavMovies = res.FavMovies;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        this.getFavMovies();
-        this.snackBar.open(`${movie.title} added to favorites!`, 'OK', {
-          duration: 3000
-        });
-      }, (error) => {
-        this.snackBar.open('Failed to add movie to favorites. Please try again later.', 'OK', {
-          duration: 3000
-        });
-      })
-    }
+  addToFav(movie: any): void {
+    this.fetchApiData.addFavMovie(this.userData.id, movie._id).subscribe((res: any) => {
+      console.log('Updated FavMovies:', res.FavMovies);
 
-    /**
-    * Function to remove a movie from user's favorite movies
-    * Calls the API to delete the movie from the user's favorites
-    * Updates the userData and favoriteMovies arrays accordingly
-    * Displays a success message using MatSnackBar
-    */
+      this.userData.FavMovies = res.FavMovies;
+      localStorage.setItem('user', JSON.stringify(this.userData));
+      this.getFavMovies();
+      this.snackBar.open(`${movie.title} added to favorites!`, 'OK', {
+        duration: 3000
+      });
+    }, (error) => {
+      this.snackBar.open('Failed to add movie to favorites. Please try again later.', 'OK', {
+        duration: 3000
+      });
+    })
+  }
+
+  /**
+   * Function to remove a movie from user's favorite movies
+   * Calls the API to delete the movie from the user's favorites
+   * Updates the userData and favoriteMovies arrays accordingly
+   * Displays a success message using MatSnackBar
+   */
   removeFromFav(movie: any): void {
     const Username = this.userData.Username;
     const movieId = movie._id;
@@ -137,7 +168,7 @@ export class ProfilePageComponent implements OnInit {
     }
 
     console.log(`Removing movie with ID: ${movieId} for user: ${Username}`);
-    
+  
 
     this.fetchApiData.deleteFavMovie(Username, movieId).subscribe((res: any) => {
       this.userData.FavMovies = res.FavMovies;
@@ -155,38 +186,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   /**
-    * Function to update user data
-    * Sends updated user details to the API and updates local storage
-    * Calls getFavoriteMovies to refresh the user's favorite movies
-    */
-  updateUserData(): void {
-    const updatedUserDetails = {
-      ...this.userData,
-      password: this.userData.password || undefined
-    };
-
-    this.fetchApiData.editUser(updatedUserDetails).subscribe((res: any) => {
-      this.userData = {
-        ...res,
-        id: res._id,
-        password: undefined,
-        token: undefined
-      };
-
-      localStorage.setItem('user', JSON.stringify(this.userData));
-      this.getFavMovies();
-      
-      this.snackBar.open('Profile updated successfully!', 'OK', {
-        duration: 3000
-      });
-    }, (error) => {
-      this.snackBar.open('Failed to update profile. Please try again later.', 'OK', {
-        duration: 3000
-      });
-    })
-  }
-
-  /**
    * Function to navigate back to Movies page
    */
   goToMoviesPage(): void {
@@ -194,9 +193,9 @@ export class ProfilePageComponent implements OnInit {
   }
 
   /**
-    * Function to delete user account
-    * Navigates to the welcome page and clears local storage
-    */
+   * Function to delete user account
+   * Navigates to the welcome page and clears local storage
+   */
   logout(): void {
     this.router.navigate(['welcome']);
     localStorage.clear();
@@ -206,4 +205,52 @@ export class ProfilePageComponent implements OnInit {
     this.userData = {};
     this.FavMovies = [];
   }
-}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
