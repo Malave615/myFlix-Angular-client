@@ -21,25 +21,25 @@ This is the front-end application, built using Angular, for a movie API I previo
 
 ## Features
 
-Feature 1: Display a welcome view where users can either login or register a new account
+- **Feature 1**: Display a welcome view where users can either login or register a new account
 
-Feature 2: Authenticated users will be able to view all movies in the database
+- **Feature 2**: Authenticated users will be able to view all movies in the database
 
-Feature 3: Upon clicking on a particular movie, users will be taken to a single movie view, where the following additional features and movie details will be displayed:  
-○ A button that when clicked takes a user to the description view, containing a description, the director, the genre, and the actors of that particular movie.
-○ A button that when clicked takes a user to the director view, where details about the director of that particular movie will be displayed. 
-○ A button that when clicked takes a user to the genre view, where details about that particular genre of the movie will be displayed. 
-○ A button that when clicked adds that particular movie to the user's list of favorites.
+- **Feature 3**: Upon clicking on a particular movie, users will be taken to a single movie view, where the following additional features and movie details will be displayed:  
+  ○ A button that when clicked takes a user to the description view, containing a description, the director, the genre, and the actors of that particular movie.
+  ○ A button that when clicked takes a user to the director view, where details about the director of that particular movie will be displayed. 
+  ○ A button that when clicked takes a user to the genre view, where details about that particular genre of the movie will be displayed. 
+  ○ A button that when clicked adds that particular movie to the user's list of favorites.
 
 ## Project Dependencies
 
-_ Angular
-_ Angular-Material
-_ Angular - Router
-_ Angular/cli
-_ jasmine
-_ typedoc
-\_ Angular-cli-ghpages
+- Angular
+- Angular-Material
+- Angular - Router
+- Angular/cli
+- jasmine
+- typedoc
+- Angular-cli-ghpages
 
 ## Setup and Installation
 
@@ -70,9 +70,11 @@ _ typedoc
    The build artifacts will be stored in the `dist/` directory.
 
 5. **Start the Development Server**:
+
    ```bash
    ng serve
    ```
+
    Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
    To access the remote application hosted on ghpages, navigate to https://Malave615.github.io/myFlix-Angular-client/
 
@@ -110,5 +112,4 @@ For more information on using the Angular CLI, including detailed command refere
 ## Author
 
 Tracy Malavé
-[Github Profile]
-(https://github.com/Malave615)
+[Github Profile](https://github.com/Malave615)
