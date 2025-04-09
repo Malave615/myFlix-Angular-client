@@ -30,6 +30,67 @@ export class FetchApiDataService {
     });
   }
 
+  /* 
+   * Handle errors from HTTP requests
+   * @param error - the error response from the HTTP request
+   * @returns an Observable that throws an error message
+   */
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    if (error.status === 401) {
+      this.router.navigate(['login']);
+    }
+    console.error(`Error Status: ${error.status}, Error body: ${error.error}`);
+    return throwError('Something went wrong; please try again later.');
+  }
+
+  private extractResponseData(res: any): any {
+    return res || {};
+  }
+
+  /*
+   * Generic HTTP GET request with auth headers
+    * @param url - the URL to send the GET request to
+   */
+  private get<T>(url: string): Observable<T> {
+    return this.http.get<T>(url, { headers: this.getAuthHeaders() }).pipe(
+      map(this.extractResponseData),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+   * Generic HTTP POST request with auth headers
+   * @param url - the URL to send the POST request to
+   */
+  private post<T>(url: string, body: any): Observable<T> {
+    return this.http.post<T>(url, body, { headers: this.getAuthHeaders() }).pipe(
+      map(this.extractResponseData),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+   * Generic HTTP PUT request with auth headers
+   * @param url - the URL to send the PUT request to
+   */
+  private put<T>(url: string, body: any): Observable<T> {
+    return this.http.put<T>(url, body, { headers: this.getAuthHeaders() }).pipe(
+      map(this.extractResponseData),
+      catchError(this.handleError)
+    );
+  }
+
+  /*
+   * Generic HTTP DELETE request with auth headers
+   * @param url - the URL to send the DELETE request to
+   */
+  private delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(url, { headers: this.getAuthHeaders() }).pipe(
+      map(this.extractResponseData),
+      catchError(this.handleError)
+    );
+  }
+
   /*
    * API call for user registration
    * @param userDetails - an object containing the user's registration details
@@ -37,9 +98,7 @@ export class FetchApiDataService {
    */
   public userRegistration(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + 'users/', userDetails).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post(apiUrl + 'users/', userDetails)
   }
 
   /*
@@ -49,9 +108,7 @@ export class FetchApiDataService {
    */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + 'login/', userDetails).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post(apiUrl + 'login/', userDetails)
   }
 
   /*
@@ -59,10 +116,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public getAllMovies(): Observable<any> {
-    return this.http.get<any[]>(apiUrl + 'movies/', { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.get<any[]>(apiUrl + 'movies/');
   }
 
    /*
@@ -71,10 +125,7 @@ export class FetchApiDataService {
     * @returns an Observable of the HTTP response from the API
     */
   public getMovie(movieTitle: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/' + movieTitle, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.get(apiUrl + 'movies/' + movieTitle);
   }
 
    /*
@@ -83,10 +134,7 @@ export class FetchApiDataService {
     * @returns an Observable of the HTTP response from the API
     */
    public getDirector(movieDirector: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/director/' + movieDirector, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.get(apiUrl + 'movies/director/' + movieDirector);
   }
 
   /*
@@ -95,30 +143,30 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public getGenre(movieGenre: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/genre/' + movieGenre, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.get(apiUrl + 'movies/genre/' + movieGenre);
   }
 
   /*
-   * API call to get a list of users
+   * API call to get a specific user by username
+   * @param username - the username of the user to retrieve
    * @returns an Observable of the HTTP response from the API
    */
   public getUser(): Observable<any> {
     const user = JSON.parse(localStorage.getItem('user') || "{}");
     
-    return this.http.get(apiUrl + 'users/' + user.Username, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    if (!user || !user.Username) {
+      console.error('User is not logged in or missing Username.');
+      this.router.navigate(['login']);
+      return throwError('User not found. Please log in again.');
+    }
+    return this.http.get(apiUrl + 'users/' + user.Username);
   };
 
-   /*
-    * API call to get a specific user by username
-    * @param username - the username of the user to retrieve
-    * @returns an Observable of the HTTP response from the API
-    */
+  /*
+   * API call to get user's favorite movies
+   * @returns an object containing the user's favorite movies
+   * @returns an object containing the user's favorite movies
+   */
   public getUserFavMovies(): any {
     const user = JSON.parse(localStorage.getItem('user') || "{}");
     return {
@@ -133,10 +181,17 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public addFavMovie(username: String, movieId: String): Observable<any> {
-    return this.http.post(apiUrl + 'users/' + username + '/' + 'movies/' + movieId, {}, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.post(apiUrl + 'users/' + username + '/' + 'movies/' + movieId, {});
+  }
+
+  /*
+   * API call to delete a movie from a user's favorite movies
+   * @param username - the username of the user to remove the movie from
+   * @param movieTitle - the title of the movie to remove from the user's favorites
+   * @returns an Observable of the HTTP response from the API
+   */
+  public deleteFavMovie(username: String, movieId: String): Observable<any> {
+    return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieId);
   }
 
   /* 
@@ -146,10 +201,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public updateUser(Username: string, updatedUserDetails: any): Observable<any> {
-    return this.http.put<any>(apiUrl + 'users/' + Username, updatedUserDetails, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.put<any>(apiUrl + 'users/' + Username, updatedUserDetails);
   }
 
   /*
@@ -158,40 +210,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public deleteUser(username: String): Observable<any> {
-    return this.http.delete(apiUrl + 'users/' + username ,  { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
+    return this.http.delete(apiUrl + 'users/' + username);
   }
   
-  /*
-   * API call to delete a movie from a user's favorite movies
-   * @param username - the username of the user to remove the movie from
-   * @param movieTitle - the title of the movie to remove from the user's favorites
-   * @returns an Observable of the HTTP response from the API
-   */
-  public deleteFavMovie(username: String, movieTitle: String): Observable<any> {
-    return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieTitle, { headers: this.getAuthHeaders() }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
-  }
-
-  /* 
-   * Handle errors from HTTP requests
-   * @param error - the error response from the HTTP request
-   * @returns an Observable that throws an error message
-   */
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 401) {
-      this.router.navigate(['login']);
-    }
-    console.error(`Error Status code ${error.status}, ` + `Error body is: ${error.error}`);
-    return throwError(
-    'Something went wrong; please try again later.');
-  }
-  
-  private extractResponseData(res: any): any {
-    return res || { };
-  }
 }
