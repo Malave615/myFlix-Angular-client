@@ -108,7 +108,13 @@ export class FetchApiDataService {
    */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + 'login/', userDetails)
+    return this.http.post(apiUrl + 'login/', userDetails).pipe(
+      map((response: any) => {
+        localStorage.setItem('token', response.token);
+        return response;
+      }),
+      catchError(this.handleError)
+    );
   }
 
   /*
@@ -116,7 +122,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public getAllMovies(): Observable<any> {
-    return this.http.get<any[]>(apiUrl + 'movies/');
+    return this.http.get<any[]>(apiUrl + 'movies/', { headers: this.getAuthHeaders() });
   }
 
    /*
@@ -125,7 +131,7 @@ export class FetchApiDataService {
     * @returns an Observable of the HTTP response from the API
     */
   public getMovie(movieTitle: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/' + movieTitle);
+    return this.http.get(apiUrl + 'movies/' + movieTitle, { headers: this.getAuthHeaders() });
   }
 
    /*
@@ -134,7 +140,7 @@ export class FetchApiDataService {
     * @returns an Observable of the HTTP response from the API
     */
    public getDirector(movieDirector: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/director/' + movieDirector);
+    return this.http.get(apiUrl + 'movies/director/' + movieDirector, { headers: this.getAuthHeaders() });
   }
 
   /*
@@ -143,7 +149,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public getGenre(movieGenre: String): Observable<any> {
-    return this.http.get(apiUrl + 'movies/genre/' + movieGenre);
+    return this.http.get(apiUrl + 'movies/genre/' + movieGenre, { headers: this.getAuthHeaders() });
   }
 
   /*
@@ -181,7 +187,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public addFavMovie(username: String, movieId: String): Observable<any> {
-    return this.http.post(apiUrl + 'users/' + username + '/' + 'movies/' + movieId, {});
+    return this.http.post(apiUrl + 'users/' + username + '/' + 'movies/' + movieId, {}, { headers: this.getAuthHeaders() });
   }
 
   /*
@@ -191,7 +197,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public deleteFavMovie(username: String, movieId: String): Observable<any> {
-    return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieId);
+    return this.http.delete(apiUrl + 'users/' + username + '/' + 'movies/' + movieId, { headers: this.getAuthHeaders() });
   }
 
   /* 
@@ -201,7 +207,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public updateUser(Username: string, updatedUserDetails: any): Observable<any> {
-    return this.http.put<any>(apiUrl + 'users/' + Username, updatedUserDetails);
+    return this.http.put<any>(apiUrl + 'users/' + Username, updatedUserDetails, { headers: this.getAuthHeaders() });
   }
 
   /*
@@ -210,7 +216,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public deleteUser(username: String): Observable<any> {
-    return this.http.delete(apiUrl + 'users/' + username);
+    return this.http.delete(apiUrl + 'users/' + username, { headers: this.getAuthHeaders() });
   }
   
 }
