@@ -108,9 +108,10 @@ export class FetchApiDataService {
    */
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + 'login/', userDetails).pipe(
+    return this.http.post(apiUrl + 'login', userDetails).pipe(
       map((response: any) => {
         localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
         return response;
       }),
       catchError(this.handleError)
@@ -122,7 +123,7 @@ export class FetchApiDataService {
    * @returns an Observable of the HTTP response from the API
    */
   public getAllMovies(): Observable<any> {
-    return this.http.get<any[]>(apiUrl + 'movies/', { headers: this.getAuthHeaders() });
+    return this.http.get<any[]>(apiUrl + 'movies', { headers: this.getAuthHeaders() });
   }
 
    /*
@@ -165,7 +166,7 @@ export class FetchApiDataService {
       this.router.navigate(['login']);
       return throwError('User not found. Please log in again.');
     }
-    return this.http.get(apiUrl + 'users/' + user.Username);
+    return this.http.get(apiUrl + 'users/' + user.Username, { headers: this.getAuthHeaders() });
   };
 
   /*
