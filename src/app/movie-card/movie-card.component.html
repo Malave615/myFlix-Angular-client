@@ -17,7 +17,16 @@
             <button mat-button color="primary" (click)="openGenreDialog(movie)">Genre</button>
             <button mat-button color="primary" (click)="openDirectorDialog(movie.Director)">Director</button>
             <button mat-button color="primary" (click)="openDescriptionDialog(movie)">Description</button>
-            <mat-icon (click)="addToFav(movie)">favorite_border</mat-icon>
+
+            <!-- Fav Button Logic -->
+            <button
+              mat-icon-button
+              (click)="isFav(movie._id) ? null : addToFav(movie)">
+              <mat-icon [ngClass]="{ 'favorite-red': isFav(movie._id) }">
+                {{ isFav(movie._id) ? 'favorite' : 'favorite_border' }}
+              </mat-icon>
+            </button>
+            
         </mat-card-actions>
     </mat-card>
 

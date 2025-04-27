@@ -24,7 +24,19 @@ export class MovieCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMovies();
+    this.loadFavMovies();
   }
+
+  loadFavMovies(): void {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    this.favMovieIds = userData.FavMovies || [];
+  }
+
+  isFav(movieId: string): boolean {
+    return this.favMovieIds.includes(movieId);
+  }
+
+  favMovieIds: string[] = [];
 
   /*
    * Fetches all movies from the API and assigns them to the movies property.
@@ -158,6 +170,8 @@ export class MovieCardComponent implements OnInit {
 
           user.FavMovies.push(movie._id);
           localStorage.setItem('user', JSON.stringify(user));
+          this.favMovieIds.push(movie._id);
+          
         },
         (error) => {
           console.error('Error adding movie to favorites:', error);
