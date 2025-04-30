@@ -3,6 +3,7 @@ import { UserRegistrationFormComponent } from './user-registration-form/user-reg
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
 export class AppComponent {
   title = 'myFlix-Angular-client';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private router: Router) {}
 
   /**
    * Function that will open the dialog when the signup button is clicked
@@ -42,5 +43,11 @@ export class AppComponent {
     this.dialog.open(MovieCardComponent, {
       width: '500px'
     });
+  }
+
+  showProfileLink(): boolean {
+    const token = localStorage.getItem('token');
+    const currentRoute = this.router.url;
+    return token !== null && currentRoute !== '/welcome';
   }
 }

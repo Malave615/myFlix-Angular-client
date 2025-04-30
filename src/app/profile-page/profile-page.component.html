@@ -7,7 +7,7 @@
   <h1>Welcome, {{ userData?.Username || 'Loading...' }}</h1>
 
   <!-- Button to open the Edit Profile Dialog -->
-  <button mat-raised-button color="accent" (click)="openEditProfileDialog()">Edit Profile</button>
+  <button mat-raised-button color="gray" (click)="openEditProfileDialog()">Edit Profile</button>
 
   <!-- Favorite Movies List -->
   <div *ngIf="userData && userData.FavMovies" class="fav-movies">

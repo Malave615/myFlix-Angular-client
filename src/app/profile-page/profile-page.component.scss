@@ -60,5 +60,11 @@ mat-icon {
     margin-top: 20px;
 }
 
-
-
+.profile-page {
+    background-image: url('/assets/angular-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding: 20px;
+}

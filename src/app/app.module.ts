@@ -26,6 +26,7 @@ import { DescriptionDialogComponent } from './description-dialog/description-dia
 import { DirectorDialogComponent } from './director-dialog/director-dialog.component';
 import { GenreDialogComponent } from './genre-dialog/genre-dialog.component';
 import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
     DescriptionDialogComponent,
     DirectorDialogComponent,
     GenreDialogComponent,
-    EditProfileFormComponent
+    EditProfileFormComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

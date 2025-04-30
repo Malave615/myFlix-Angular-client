@@ -1,5 +1,10 @@
 <nav>
-    <a routerLink="/profile">Profile</a>
+    <a
+      class="profile-link"
+      *ngIf="showProfileLink()"
+      [routerLink]="['/profile']">
+      Profile
+    </a>
 </nav>
 
 <router-outlet></router-outlet>

@@ -219,5 +219,15 @@ export class FetchApiDataService {
   public deleteUser(username: String): Observable<any> {
     return this.http.delete(apiUrl + 'users/' + username, { headers: this.getAuthHeaders() });
   }
-  
+
+  /**
+   * API call to reset user password
+   * @param email - the email address of the user to reset the password for
+   */
+  public resetPassword(email: string): Observable<any> {
+    return this.http.post(apiUrl + 'users/reset-password', { email }, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
